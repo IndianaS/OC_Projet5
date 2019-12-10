@@ -1,11 +1,10 @@
-from settings.settings import mots_clef, liste_de_catégories
-from models.productdownload import ProductDownloader
-from models.categorydownloader import CategoryDownloader
-
 from bdd.connection import Connection
+from bdd.dbadd import DbAdd
 from bdd.dbcreate import DbCreate
-from bdd.dbadd  import DbAdd
 from bdd.dbreading import DbReading
+from models.categorydownloader import CategoryDownloader
+from models.productdownload import ProductDownloader
+from settings.settings import liste_de_catégories, mots_clef
 
 auth = Connection()
 auth.connect()

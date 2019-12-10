@@ -1,11 +1,11 @@
 import mysql.connector
 
+
 class DbAdd:
     """Add data class in the db"""
-    
+
     def __init__(self, connection):
         self.connect = connection
-    
 
     def add_category(self, all_category):
         """Adding categories in the db"""
@@ -32,21 +32,21 @@ class DbAdd:
 
             for product in category.products:
                 try:
-                    cursor.execute(mySql_insert_query, (product.product_name_fr[:499], product.nutrition_grade_fr, product.id, product.brands, cat_id[0]))
+                    cursor.execute(mySql_insert_query, (
+                        product.product_name_fr[:499], product.nutrition_grade_fr, product.id, product.brands, cat_id[0]))
                 except mysql.connector.errors.IntegrityError:
                     # Add logging here
                     continue
 
-                for store in product.stores.split(","):                    
+                for store in product.stores.split(","):
                     try:
-                        query = "INSERT INTO openfood.store (name) VALUES (%s) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=name"                    
+                        query = "INSERT INTO openfood.store (name) VALUES (%s) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=name"
                         cursor.execute(query, (store.strip().lower(),))
                         query = "INSERT INTO openfood.product_has_store (id_store, id_product) VALUES (LAST_INSERT_ID(), %s)"
                         cursor.execute(query, (product.id,))
                     except mysql.connector.errors.IntegrityError:
                         # Add logging here
-                        
+
                         continue
-                    
-            
+
             self.connect.commit()

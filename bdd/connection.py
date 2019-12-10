@@ -1,10 +1,12 @@
 import mysql.connector
 from mysql.connector import Error
+
 from settings.settings import *
 
+
 class Connection:
-    """Class connection db""" 
-    
+    """Class connection db"""
+
     def __init__(self):
         """Connection information"""
         self.host = host
@@ -16,11 +18,11 @@ class Connection:
         """Connection method"""
         try:
             self.connection = mysql.connector.connect(
-                host=self.host, 
-                user=self.user, 
+                host=self.host,
+                user=self.user,
                 password=self.password
-                )
-        
+            )
+
         except mysql.connector.Error as error:
             print(error)
 
