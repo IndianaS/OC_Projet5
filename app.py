@@ -1,7 +1,7 @@
-from bdd.connection import Connection
-from bdd.dbadd import DbAdd
-from bdd.dbcreate import DbCreate
-from bdd.dbreading import DbReading
+from models.bdd.connection import Connection
+from models.bdd.dbadd import DbAdd
+from models.bdd.dbcreate import DbCreate
+from models.bdd.dbreading import DbReading
 from models.categorydownloader import CategoryDownloader
 from models.productdownload import ProductDownloader
 from settings.settings import liste_de_catégories, mots_clef
