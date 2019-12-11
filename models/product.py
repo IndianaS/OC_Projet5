@@ -5,11 +5,12 @@ class Product:
     """Class that contains product information"""
 
     def __init__(self, **article):
-        self.product_name_fr = article['product_name_fr']
-        self.stores = article['stores']
-        self.nutrition_grade_fr = article['nutrition_grade_fr']
-        self.id = article['id']
-        self.brands = article['brands']
+        self.product_name_fr = article.get('product_name_fr')
+        self.stores = article.get('stores')
+        self.nutrition_grade_fr = article.get('nutrition_grade_fr')
+        self.id = article.get('id')
+        self.brands = article.get('brands')
+        self.id_category = article.get('id_category')
 
     @classmethod
     def is_valid(cls, article):
@@ -31,3 +32,6 @@ class Product:
 
     def __repr__(self):
         return f"Product({self.product_name_fr})"
+
+    def __str__(self):
+        return f"{self.product_name_fr} ({self.nutrition_grade_fr.upper()})"

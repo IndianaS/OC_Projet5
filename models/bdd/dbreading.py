@@ -1,3 +1,5 @@
+from models.product import Product
+
 
 class DbReading:
 
@@ -12,20 +14,98 @@ class DbReading:
 
         cursor.execute(query)
 
-        for category in cursor.fetchall():
-            print(category)
+        return cursor.fetchall()
 
     def get_category_products(self, id_category):
         cursor = self.connect.create_cursor()
-        query = """SELECT product.id, product.product_name_fr FROM openfood.product WHERE product.id_category = %s LIMIT 30"""
+        query = """
+            SELECT 
+                product.id, 
+                product.product_name_fr,
+                product.id_category,
+                product.brands,
+                product.nutrition_grade_fr
+            FROM 
+                openfood.product 
+            WHERE 
+                product.id_category = %s LIMIT 30
+                """
 
         cursor.execute(query, (id_category,))
 
-        rows = cursor.fetchall()
+        data = cursor.fetchall()
 
-        product_infos = []
-        for index, product in enumerate(rows):
-            dico = {"index": index,
-                    "product_name_fr": product[1], "id": product[0]}
-            product_infos.append(dico)
-            print(dico)
+        products = []
+        for id, name, id_category, brands, nutrition_grade_fr in data:
+            products.append(
+                Product(
+                    product_name_fr=name,
+                    nutrition_grade_fr=nutrition_grade_fr,
+                    id=id,
+                    brands=brands,
+                    id_category=id_category,
+                )
+            )
+
+        return products
+
+    def get_product(self, id):
+        cursor = self.connect.create_cursor()
+        query = """
+                SELECT 
+                    product.id, 
+                    product.product_name_fr,
+                    product.id_category,
+                    product.brands,
+                    product.nutrition_grade_fr
+                FROM 
+                    openfood.product
+                WHERE
+                    product.id = %s
+                """
+        cursor.execute(query, (id,))
+        id, name, id_category, brands, nutrition_grade_fr = cursor.fetchone()
+
+        return Product(
+                    product_name_fr=name,
+                    nutrition_grade_fr=nutrition_grade_fr,
+                    id=id,
+                    brands=brands,
+                    id_category=id_category,
+                    )
+
+    def get_substitute(self, product):
+        cursor = self.connect.create_cursor()
+        query = """
+                SELECT 
+                    product.id, 
+                    product.product_name_fr,
+                    product.id_category,
+                    product.brands,
+                    product.nutrition_grade_fr
+                FROM 
+                    openfood.product
+                WHERE
+                    product.id_category = %s AND
+                    product.nutrition_grade_fr < %s
+                ORDER BY product.nutrition_grade_fr
+                LIMIT 4
+                """
+
+        cursor.execute(query, (product.id_category, product.nutrition_grade_fr,))
+        
+        data = cursor.fetchall()
+
+        products = []
+        for id, name, id_category, brands, nutrition_grade_fr in data:
+            products.append(
+                Product(
+                    product_name_fr=name,
+                    nutrition_grade_fr=nutrition_grade_fr,
+                    id=id,
+                    brands=brands,
+                    id_category=id_category,
+                )
+            )
+
+        return products

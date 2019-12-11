@@ -24,11 +24,8 @@ class Connection:
             )
 
         except mysql.connector.Error as error:
+            # Add logging
             print(error)
-
-        finally:
-            if (self.connection.is_connected()):
-                print("Bonjour vous êtes connectés!")
 
     def create_cursor(self):
         return self.connection.cursor()
