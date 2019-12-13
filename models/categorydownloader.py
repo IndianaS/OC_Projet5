@@ -1,6 +1,6 @@
 from models.category import Category
 from models.productdownload import ProductDownloader
-from settings.settings import liste_de_catégories, mots_clef
+from settings.settings import category_list, keywords
 
 
 class CategoryDownloader:
@@ -12,7 +12,7 @@ class CategoryDownloader:
     def get_category(self):
         """Add the categories to the list"""
         all_category = []
-        for category in liste_de_catégories:
+        for category in category_list:
             cat = Category()
             cat.name = category
             get_products = ProductDownloader()

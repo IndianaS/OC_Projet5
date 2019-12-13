@@ -1,4 +1,4 @@
-from settings.settings import mots_clef
+from settings.settings import keywords
 
 
 class Product:
@@ -16,15 +16,15 @@ class Product:
     def is_valid(cls, article):
         """Method of product validation"""
         is_valid = True
-        for mot in mots_clef:
+        for word in keywords:
 
           # On vérifie que le dictionnaire contient la clé
-            if mot not in article:
+            if word not in article:
                 is_valid = False
                 break
 
       # On vérifie que ça contient un truc
-            if not article[mot]:
+            if not article[word]:
                 is_valid = False
                 break
 

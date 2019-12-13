@@ -26,9 +26,9 @@ class ProductDownloader:
 
     def filter_product(self, product_list):
         """Add products sorted to the list"""
-        produits_triés = []
+        sorted_products = []
         for article in product_list['products']:
             if Product.is_valid(article):
-                produits_triés.append(Product(**article))
+                sorted_products.append(Product(**article))
 
-        return produits_triés
+        return sorted_products
