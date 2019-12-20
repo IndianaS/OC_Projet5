@@ -18,12 +18,12 @@ class Product:
         is_valid = True
         for word in keywords:
 
-          # On vérifie que le dictionnaire contient la clé
+            # On vérifie que le dictionnaire contient la clé
             if word not in article:
                 is_valid = False
                 break
 
-      # On vérifie que ça contient un truc
+            # On vérifie que ça contient un truc
             if not article[word]:
                 is_valid = False
                 break

@@ -9,7 +9,7 @@ class DbAdd:
 
     def add_category(self, all_category):
         """Adding categories in the db"""
-        mySql_insert_query = """INSERT INTO category (name) VALUES (%s)"""
+        mySql_insert_query = "INSERT INTO category (name) VALUES (%s)"
         cursor = self.connect.create_cursor()
         cursor.execute('USE openfood')
 
@@ -23,7 +23,7 @@ class DbAdd:
 
     def add_product(self, all_category):
         """Add all the data of a product in the db"""
-        mySql_insert_query = """INSERT INTO product (product_name_fr, nutrition_grade_fr, id, brands, id_category) VALUES (%s, %s, %s, %s, %s)"""
+        mySql_insert_query = "INSERT INTO product (product_name_fr, nutrition_grade_fr, id, brands, id_category) VALUES (%s, %s, %s, %s, %s)"
         cursor = self.connect.create_cursor()
         for category in all_category:
             query = "SELECT id FROM category WHERE category.name LIKE %s"
@@ -50,3 +50,8 @@ class DbAdd:
                         continue
 
             self.connect.commit()
+
+    def add_favorite(self, substitute, product):
+        query = "INSERT INTO favorite (id_compared, id_result) VALUES (%s, %s)"
+        cursor = self.connect.create_cursor()
+        cursor.execute(query, (product.id, substitute.id,))

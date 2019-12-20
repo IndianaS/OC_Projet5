@@ -36,22 +36,11 @@ add_db.add_product(all_categories)
 """
 test = Interface(auth)
 
-# L'utilisateur demande la liste des catégories :
-test.fetch_categories()
+test.loop()
 
-# L'utilisateur choisit une catégorie :
-word1 = test.input_user('Choisir une catégorie :')
-test.fetch_products(word1)
-
-# L'utilisateur choisit un produit :
-word2 = int(test.input_user('Choisir un produit de la liste :'))
-test.fetch_one_product(word2)
-
-
-# L'utilisateur confirme le produit :
-word3 = int(test.input_user('Confirmer le produit :'))
-test.fetch_substitutes(word3)
-
-# L'utilisateur choisit un substitut :
-word4 = int(test.input_user('Choisir un substitut dans la liste :'))
-test.fetch_one_product(word4)
+"""
+> L'utilisateur lance le programme:
+$ Le programme propose un menu
+- Choix d'une categorie 
+- Choix voir les favoris
+"""

@@ -28,7 +28,7 @@ class DbReading:
             FROM 
                 openfood.product 
             WHERE 
-                product.id_category = %s LIMIT 30
+                product.id_category = %s LIMIT 50
                 """
 
         cursor.execute(query, (id_category,))
@@ -89,7 +89,7 @@ class DbReading:
                     product.id_category = %s AND
                     product.nutrition_grade_fr < %s
                 ORDER BY product.nutrition_grade_fr
-                LIMIT 4
+                LIMIT 10
                 """
 
         cursor.execute(query, (product.id_category, product.nutrition_grade_fr,))
