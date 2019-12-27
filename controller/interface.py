@@ -6,11 +6,13 @@ class Interface:
 
     def __init__(self, auth):
         self.dbreading = DbReading(auth)
+        self.dbadd = DbAdd(auth)
         self.display = Display()
         self.products = []
         self.len = None
         self.commands = ['o', 'n', 'q']
-
+        self.product = None
+    
     def fetch_categories(self):
         """Method called when the user requests categories"""
         all_categories = self.dbreading.get_all_categories()
@@ -31,10 +33,10 @@ class Interface:
 
     def fetch_substitutes(self, index):
         """Method called when the user requests the substitutes"""
-        product = self.products[index-1]
-        self.products = self.dbreading.get_substitute(product)
+        self.product = self.products[index-1]
+        self.substitutes = self.dbreading.get_substitute(self.product)
         self.len = len(self.products)
-        self.display.display_products(self.products)
+        self.display.display_products(self.substitutes)
 
     def input_user(self, message):
         while True:
@@ -68,13 +70,12 @@ class Interface:
                     self.fetch_categories()
                     choice = self.input_user('Choisir une catégorie entre 1 et 5 :')
                     self.fetch_products(choice)
-                    choice = self.input_user('Choisir un produit de la liste :')
-                    self.fetch_substitutes(choice)
-                    choice = self.input_user('Choisir un substitut dans la liste :')
-                    self.fetch_one_product(choice)
+                    product_choice = self.input_user('Choisir un produit de la liste :')
+                    self.fetch_substitutes(product_choice)
+                    substitute_choice = self.input_user('Choisir un substitut dans la liste :')
+                    self.fetch_one_product(substitute_choice)
                     choice = self.input_user('Voulez vous enregistrer le produit?\no pour oui / n pour non :')
-                    self.dbadd.add_favorite(choice)
-                    # print(choice)
+                    self.dbadd.add_favorite(self.products[product_choice-1], self.substitutes[substitute_choice-1])
                     break
             if command == 2:
                 pass

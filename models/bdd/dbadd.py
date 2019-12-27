@@ -51,7 +51,9 @@ class DbAdd:
 
             self.connect.commit()
 
-    def add_favorite(self, substitute, product):
+    def add_favorite(self, product, substitute):
         query = "INSERT INTO favorite (id_compared, id_result) VALUES (%s, %s)"
         cursor = self.connect.create_cursor()
         cursor.execute(query, (product.id, substitute.id,))
+
+        self.connect.commit()
