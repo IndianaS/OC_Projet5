@@ -10,7 +10,7 @@ class DbReading:
         cursor = self.connect.create_cursor()
         cursor.execute('USE openfood')
 
-        query = """SELECT * FROM category"""
+        query = """SELECT * FROM category ORDER BY category.id"""
 
         cursor.execute(query)
 
@@ -83,7 +83,7 @@ class DbReading:
                     product.id_category,
                     product.brands,
                     product.nutrition_grade_fr
-                FROM 
+                FROM
                     openfood.product
                 WHERE
                     product.id_category = %s AND
@@ -109,3 +109,15 @@ class DbReading:
             )
 
         return products
+
+    def get_favorite(self):
+        cursor = self.connect.create_cursor()
+        query = """
+                SELECT
+                    favorite.id_compared,
+                    favorite.id_result
+                FROM
+                    openfood.favorite
+                """
+        
+        cursor.execute(query)

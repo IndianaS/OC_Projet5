@@ -7,7 +7,8 @@ class Display:
 
     def display_categories(self, all_categories):
         """Displays the list of categories"""
-        print(all_categories)
+        for index, categorie in all_categories:
+            print(f"{index}. {categorie}")
     
     def display_products(self, products):
         """Show product list"""

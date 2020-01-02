@@ -10,9 +10,14 @@ class Interface:
         self.display = Display()
         self.products = []
         self.len = None
-        self.commands = ['o', 'n', 'q']
+        self.commands = ['o', 'n', 'q', 'a']
         self.product = None
-    
+        self.next = self.menu_accueil
+        self.choice = None
+        self.running = False
+
+
+
     def fetch_categories(self):
         """Method called when the user requests categories"""
         all_categories = self.dbreading.get_all_categories()
@@ -27,7 +32,7 @@ class Interface:
 
     def fetch_one_product(self, index):
         """Method called when the user requests a product"""
-        selected_id = self.products[index-1].id
+        selected_id = self.substitutes[index-1].id
         product = self.dbreading.get_product(selected_id)
         self.display.display_one_product(product)
 
@@ -58,26 +63,57 @@ class Interface:
 
         return saisie_utilisateur
 
+    def menu_accueil(self):
+        self.len = 2
+        self.choice = self.input_user('1 - Afficher les categories \n2 - Favoris \nq - Quitter\n')
+        if self.choice == "q":
+            self.next = self.quit
+        elif self.choice == 1:
+            self.next = self.menu_categories
+        elif self.choice == 2:
+            self.next = self.menu_favoris
+
+    def menu_categories(self):
+        print("Le choix précédent a été", self.choice)
+        self.fetch_categories()
+        self.choice = self.input_user('Choisir une catégorie :')
+        if self.choice == "q":
+            self.next = self.quit
+        elif self.choice == "a":
+            self.next = self.menu_accueil
+        else:
+            self.next = self.menu_products
+
+    def menu_products(self):
+        self.fetch_products(self.choice)
+
+        self.choice = product_choice = self.input_user('Choisir un produit de la liste :')
+        self.fetch_substitutes(self.choice)
+
+        self.choice = substitute_choice = self.input_user('Choisir un substitut dans la liste :')
+        self.fetch_one_product(substitute_choice)
+
+        self.choice = self.input_user('Voulez vous enregistrer le produit?\no pour oui / n pour non :')
+        if self.choice in ("q", "n"):
+            self.next = self.quit
+        elif self.choice == "a":
+            self.next = self.menu_accueil
+        elif self.choice == 'o':
+            self.dbadd.add_favorite(self.products[product_choice-1], self.substitutes[substitute_choice-1])
+            self.next = self.menu_accueil
+
+  
+    def menu_favoris(self):
+        print("Test menu favoris")
+        if self.choice == "q":
+            self.next = self.quit
+        elif self.choice == "a":
+            self.next = self.menu_accueil
+
+    def quit(self, **info):
+        self.running = False
 
     def loop(self):
-        state = True
-        while state:
-            message = """1 - Afficher les categories \n2 - Favoris \nq - Quitter\n"""
-            self.len = 2
-            command = self.input_user(message)
-            if command == 1:
-                while True:
-                    self.fetch_categories()
-                    choice = self.input_user('Choisir une catégorie entre 1 et 5 :')
-                    self.fetch_products(choice)
-                    product_choice = self.input_user('Choisir un produit de la liste :')
-                    self.fetch_substitutes(product_choice)
-                    substitute_choice = self.input_user('Choisir un substitut dans la liste :')
-                    self.fetch_one_product(substitute_choice)
-                    choice = self.input_user('Voulez vous enregistrer le produit?\no pour oui / n pour non :')
-                    self.dbadd.add_favorite(self.products[product_choice-1], self.substitutes[substitute_choice-1])
-                    break
-            if command == 2:
-                pass
-            if command == 'q':
-                state = False
+        self.running = True
+        while self.running:
+            self.next()
