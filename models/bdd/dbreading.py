@@ -110,7 +110,7 @@ class DbReading:
 
         return products
 
-    def get_favorite(self):
+    def get_favorite(self, product):
         cursor = self.connect.create_cursor()
         query = """
                 SELECT
@@ -121,3 +121,20 @@ class DbReading:
                 """
         
         cursor.execute(query)
+        """
+        data = cursor.fetchall()
+
+        products = []
+        for id, name, id_category, brands, nutrition_grade_fr in data:
+            products.append(
+                Product(
+                    product_name_fr=name,
+                    nutrition_grade_fr=nutrition_grade_fr,
+                    id=id,
+                    brands=brands,
+                    id_category=id_category,
+                )
+            )
+
+        return products
+        """

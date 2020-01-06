@@ -12,7 +12,7 @@ class Interface:
         self.len = None
         self.commands = ['o', 'n', 'q', 'a']
         self.product = None
-        self.next = self.menu_accueil
+        self.next = self.menu_home
         self.choice = None
         self.running = False
 
@@ -43,6 +43,10 @@ class Interface:
         self.len = len(self.products)
         self.display.display_products(self.substitutes)
 
+    def fetch_favorite(self):
+        self.favorites = self.dbreading.get_favorite(self.product)
+        self.display.display_one_product(self.favorites)
+
     def input_user(self, message):
         while True:
             saisie_utilisateur = input(message)
@@ -63,28 +67,31 @@ class Interface:
 
         return saisie_utilisateur
 
-    def menu_accueil(self):
+    def menu_home(self):
+        """Home menu management"""
         self.len = 2
-        self.choice = self.input_user('1 - Afficher les categories \n2 - Favoris \nq - Quitter\n')
+        self.choice = self.input_user('1 - Afficher les categories \n2 - favoris \nq - Quitter\n')
         if self.choice == "q":
             self.next = self.quit
         elif self.choice == 1:
             self.next = self.menu_categories
         elif self.choice == 2:
-            self.next = self.menu_favoris
+            self.next = self.menu_favorites
 
     def menu_categories(self):
+        """Menu management categories"""
         print("Le choix précédent a été", self.choice)
         self.fetch_categories()
         self.choice = self.input_user('Choisir une catégorie :')
         if self.choice == "q":
             self.next = self.quit
         elif self.choice == "a":
-            self.next = self.menu_accueil
+            self.next = self.menu_home
         else:
             self.next = self.menu_products
 
     def menu_products(self):
+        """Product menu management"""
         self.fetch_products(self.choice)
 
         self.choice = product_choice = self.input_user('Choisir un produit de la liste :')
@@ -97,23 +104,26 @@ class Interface:
         if self.choice in ("q", "n"):
             self.next = self.quit
         elif self.choice == "a":
-            self.next = self.menu_accueil
+            self.next = self.menu_home
         elif self.choice == 'o':
             self.dbadd.add_favorite(self.products[product_choice-1], self.substitutes[substitute_choice-1])
-            self.next = self.menu_accueil
+            self.next = self.menu_home
 
   
-    def menu_favoris(self):
-        print("Test menu favoris")
+    def menu_favorites(self):
+        """Favorite menu management"""
+        self.fetch_favorite()
         if self.choice == "q":
             self.next = self.quit
         elif self.choice == "a":
-            self.next = self.menu_accueil
+            self.next = self.menu_home
 
     def quit(self, **info):
+        """Methode to get out of the loop"""
         self.running = False
 
     def loop(self):
+        """Main loop"""
         self.running = True
         while self.running:
             self.next()
