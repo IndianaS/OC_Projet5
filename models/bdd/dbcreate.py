@@ -13,6 +13,7 @@ class DbCreate:
         create_query = """
                         CREATE DATABASE IF NOT EXISTS openfood CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
                         """
+        cursor.execute(create_query)
 
     def create_table(self):
         """Db table creation method"""
@@ -35,6 +36,7 @@ class DbCreate:
                         product_name_fr VARCHAR(500) NOT NULL,
                         brands VARCHAR(200) NOT NULL,
                         nutrition_grade_fr VARCHAR(10) NOT NULL,
+                        url VARCHAR(500) NOT NULL,
                         PRIMARY KEY (id),
                         CONSTRAINT `fk_id_category`
                             FOREIGN KEY (`id_category`) REFERENCES `category` (`id`)

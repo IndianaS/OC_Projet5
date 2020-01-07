@@ -2,6 +2,7 @@ from models.bdd.dbreading import DbReading
 from views.display import Display
 from models.bdd.dbadd import DbAdd
 
+
 class Interface:
 
     def __init__(self, auth):
@@ -15,8 +16,6 @@ class Interface:
         self.next = self.menu_home
         self.choice = None
         self.running = False
-
-
 
     def fetch_categories(self):
         """Method called when the user requests categories"""
@@ -46,7 +45,7 @@ class Interface:
     def fetch_favorite(self):
         """Method called when the user requests the favorites"""
         self.favorites = self.dbreading.get_favorite()
-        self.display.display_one_product(self.favorites)
+        self.display.display_favorites(self.favorites)
 
     def input_user(self, message):
         while True:
@@ -65,13 +64,13 @@ class Interface:
                 except:
                     print("Votre choix n'est pas valide. \n")
 
-
         return saisie_utilisateur
 
     def menu_home(self):
         """Home menu management"""
         self.len = 2
-        self.choice = self.input_user('1 - Afficher les categories \n2 - favoris \nq - Quitter\n')
+        self.choice = self.input_user(
+            '1 - Afficher les categories \n2 - favoris \nq - Quitter\n')
         if self.choice == "q":
             self.next = self.quit
         elif self.choice == 1:
@@ -95,25 +94,30 @@ class Interface:
         """Product menu management"""
         self.fetch_products(self.choice)
 
-        self.choice = product_choice = self.input_user('Choisir un produit de la liste :')
+        self.choice = product_choice = self.input_user(
+            'Choisir un produit de la liste :')
         self.fetch_substitutes(self.choice)
 
-        self.choice = substitute_choice = self.input_user('Choisir un substitut dans la liste :')
+        self.choice = substitute_choice = self.input_user(
+            'Choisir un substitut dans la liste :')
         self.fetch_one_product(substitute_choice)
 
-        self.choice = self.input_user('Voulez vous enregistrer le produit?\no pour oui / n pour non :')
+        self.choice = self.input_user(
+            'Voulez vous enregistrer le produit?\no pour oui / n pour non :')
         if self.choice in ("q", "n"):
             self.next = self.quit
         elif self.choice == "a":
             self.next = self.menu_home
         elif self.choice == 'o':
-            self.dbadd.add_favorite(self.products[product_choice-1], self.substitutes[substitute_choice-1])
+            self.dbadd.add_favorite(
+                self.products[product_choice-1], self.substitutes[substitute_choice-1])
             self.next = self.menu_home
 
-  
     def menu_favorites(self):
         """Favorite menu management"""
+        print("Le choix précédent a été", self.choice)
         self.fetch_favorite()
+        self.choice = self.input_user('Sélectionner un produit:')
         if self.choice == "q":
             self.next = self.quit
         elif self.choice == "a":

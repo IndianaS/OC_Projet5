@@ -70,12 +70,12 @@ class DbReading:
         id, name, id_category, brands, nutrition_grade_fr = cursor.fetchone()
 
         return Product(
-                    product_name_fr=name,
-                    nutrition_grade_fr=nutrition_grade_fr,
-                    id=id,
-                    brands=brands,
-                    id_category=id_category,
-                    )
+            product_name_fr=name,
+            nutrition_grade_fr=nutrition_grade_fr,
+            id=id,
+            brands=brands,
+            id_category=id_category,
+        )
 
     def get_substitute(self, product):
         """Method of selecting substitutes for a selected product"""
@@ -96,8 +96,9 @@ class DbReading:
                 LIMIT 10
                 """
 
-        cursor.execute(query, (product.id_category, product.nutrition_grade_fr,))
-        
+        cursor.execute(query, (product.id_category,
+                               product.nutrition_grade_fr,))
+
         data = cursor.fetchall()
 
         products = []
@@ -118,20 +119,39 @@ class DbReading:
         """Method of selecting favorites save"""
         cursor = self.connect.create_cursor()
         cursor.execute('USE openfood')
+
         query = """
                 SELECT
                     compared.id,
                     compared.product_name_fr,
                     compared.nutrition_grade_fr,
-                    compared.brands,
                     result.id,
                     result.product_name_fr,
-                    result.nutrition_grade_fr,
-                    result.brands
+                    result.nutrition_grade_fr
                 FROM
                     openfood.favorite
                     JOIN product as compared ON favorite.id_compared = compared.id
                     JOIN product as result ON favorite.id_result = result.id
                 """
-        
+
         cursor.execute(query)
+        data = cursor.fetchall()
+
+        favorite_list = []
+        for favorite in data:
+            product_favorite = {
+                'product_compared': Product(
+                    id=favorite[0],
+                    product_name_fr=favorite[1],
+                    nutrition_grade_fr=favorite[2]
+                    )
+                ,
+                'product_sub': Product(
+                    id=favorite[3],
+                    product_name_fr=favorite[4],
+                    nutrition_grade_fr=favorite[5]
+                    )
+            }
+            favorite_list.append(product_favorite)
+
+        return favorite_list

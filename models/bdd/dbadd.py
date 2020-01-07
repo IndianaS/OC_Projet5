@@ -23,7 +23,7 @@ class DbAdd:
 
     def add_product(self, all_category):
         """Add all the data of a product in the db"""
-        mySql_insert_query = "INSERT INTO product (product_name_fr, nutrition_grade_fr, id, brands, id_category) VALUES (%s, %s, %s, %s, %s)"
+        mySql_insert_query = "INSERT INTO product (product_name_fr, nutrition_grade_fr, id, brands, id_category, url) VALUES (%s, %s, %s, %s, %s, %s)"
         cursor = self.connect.create_cursor()
         for category in all_category:
             query = "SELECT id FROM category WHERE category.name LIKE %s"
@@ -33,7 +33,7 @@ class DbAdd:
             for product in category.products:
                 try:
                     cursor.execute(mySql_insert_query, (
-                        product.product_name_fr[:499], product.nutrition_grade_fr, product.id, product.brands, cat_id[0]))
+                        product.product_name_fr[:499], product.nutrition_grade_fr, product.id, product.brands, cat_id[0], product.url))
                 except mysql.connector.errors.IntegrityError:
                     # Add logging here
                     continue
