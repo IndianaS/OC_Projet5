@@ -44,7 +44,8 @@ class Interface:
         self.display.display_products(self.substitutes)
 
     def fetch_favorite(self):
-        self.favorites = self.dbreading.get_favorite(self.product)
+        """Method called when the user requests the favorites"""
+        self.favorites = self.dbreading.get_favorite()
         self.display.display_one_product(self.favorites)
 
     def input_user(self, message):
