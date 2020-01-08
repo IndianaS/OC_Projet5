@@ -1,15 +1,25 @@
-# - Projet 5 OC
+# - Project 5 OC
 
 # - Description:
-- Le programme affichera un système de gestion de produit, fonctionnant à partie du terminal, sans interface graphique.
+- The program will display a product management system, operating from the terminal, without a graphical interface.
 
 # - Menu:
-- Dans un menu, l'utilisateur sélectionne un produit dans l'emsemble de bases de données MySQL.
-- Le programme affichera la fiche du produit, ainsi que le nom de son substitut.
+- In a menu, the user will have several choices, display categories, display favorites or quit.
+- After selection by the user the program will display a list of data stored in db.
+- The user can select a product from a list, then display the substitutes for the product.
+- The user will be able to register the products, then display the product sheet via a url link.
 
-- A tout moment, lorsque le programme propose un menu de choix, l'utisateur peut revenir au menu précédent ou quitter le programme.
+- At any time, when the program offers a choice menu, the user can return to the previous menu or exit the program.
 
 
-# - Recommandations d'installation:
+# - Installation recommendations:
+- MariaDB (or MySQL)
 
-- MariaDB (ou MySQL)
+# - 1: Initializing a db:
+- 1: To install pipenv: pipenv install
+- 2: To position yourself in pipenv: pipenv shell
+- 3: For initializing a db: python installdb.py
+
+# - 2: Project run:
+- : If you have already initialized the virtual environment to download the data.
+- 1: To run the app: python app.py
