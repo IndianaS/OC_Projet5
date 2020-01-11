@@ -16,9 +16,10 @@
 - MariaDB (or MySQL)
 
 # - 1: Initializing a db:
-- 1: To install pipenv: pipenv install
+- 1: To initialize the virtual environment: pipenv install
 - 2: To position yourself in pipenv: pipenv shell
-- 3: For initializing a db: python installdb.py
+- 3: The user must rename settings.py.example to settings.py and indicate the login and password.
+- 4: For initializing a db: python installdb.py
 
 # - 2: Project run:
 - : If you have already initialized the virtual environment to download the data.
