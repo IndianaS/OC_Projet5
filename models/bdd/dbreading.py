@@ -23,15 +23,15 @@ class DbReading:
         """Method of recovering products from a category"""
         cursor = self.connect.create_cursor()
         query = """
-            SELECT 
-                product.id, 
+            SELECT
+                product.id,
                 product.product_name_fr,
                 product.id_category,
                 product.brands,
                 product.nutrition_grade_fr
-            FROM 
-                openfood.product 
-            WHERE 
+            FROM
+                openfood.product
+            WHERE
                 product.id_category = %s LIMIT 50
                 """
 
@@ -57,13 +57,13 @@ class DbReading:
         """Method of recovering a selected product"""
         cursor = self.connect.create_cursor()
         query = """
-                SELECT 
-                    product.id, 
+                SELECT
+                    product.id,
                     product.product_name_fr,
                     product.id_category,
                     product.brands,
                     product.nutrition_grade_fr
-                FROM 
+                FROM
                     openfood.product
                 WHERE
                     product.id = %s
@@ -83,8 +83,8 @@ class DbReading:
         """Method of selecting substitutes for a selected product"""
         cursor = self.connect.create_cursor()
         query = """
-                SELECT 
-                    product.id, 
+                SELECT
+                    product.id,
                     product.product_name_fr,
                     product.id_category,
                     product.brands,

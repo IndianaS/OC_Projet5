@@ -8,8 +8,8 @@ class Interface:
 
     def __init__(self, auth):
         """
-        Instantiation of communication classes with the database, 
-        Instantiating the class containing the views
+        Instantiation of communication classes with the database,
+        instantiating the class containing the views
         """
         self.dbreading = DbReading(auth)
         self.dbadd = DbAdd(auth)
@@ -36,13 +36,13 @@ class Interface:
 
     def fetch_one_product(self, index):
         """Method called when the user requests a product"""
-        selected_id = self.substitutes[index-1].id
+        selected_id = self.substitutes[index - 1].id
         product = self.dbreading.get_product(selected_id)
         self.display.display_one_product(product)
 
     def fetch_substitutes(self, index):
         """Method called when the user requests the substitutes"""
-        self.product = self.products[index-1]
+        self.product = self.products[index - 1]
         self.substitutes = self.dbreading.get_substitute(self.product)
         self.len = len(self.products)
         self.display.display_products(self.substitutes)
@@ -67,7 +67,7 @@ class Interface:
                     assert saisie_utilisateur <= self.len
                     break
 
-                except:
+                except BaseException:
                     print("Votre choix n'est pas valide. \n")
 
         return saisie_utilisateur
@@ -116,7 +116,7 @@ class Interface:
             self.next = self.menu_home
         elif self.choice == 'o':
             self.dbadd.add_favorite(
-                self.products[product_choice-1], self.substitutes[substitute_choice-1])
+                self.products[product_choice - 1], self.substitutes[substitute_choice - 1])
             self.next = self.menu_home
 
     def menu_favorites(self):
