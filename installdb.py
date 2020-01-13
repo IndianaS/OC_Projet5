@@ -28,5 +28,6 @@ def main():
     print('On ajoute les produits de chaque catégorie en base de données !')
     add_db.add_product(all_categories)
 
+
 if __name__ == "__main__":
     main()

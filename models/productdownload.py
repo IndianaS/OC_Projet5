@@ -3,6 +3,7 @@ import requests
 from settings.settings import url
 from .product import Product
 
+
 class ProductDownloader:
     """Class who downloads the products"""
 

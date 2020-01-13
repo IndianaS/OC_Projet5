@@ -5,6 +5,7 @@ from models.bdd.dbadd import DbAdd
 
 class Interface:
     """Program management class"""
+
     def __init__(self, auth):
         """
         Instantiation of communication classes with the database, 

@@ -3,6 +3,7 @@ from models.product import Product
 
 class DbReading:
     """Db reading class"""
+
     def __init__(self, connection):
         """Connection initialization"""
         self.connect = connection
@@ -145,13 +146,12 @@ class DbReading:
                     id=favorite[0],
                     product_name_fr=favorite[1],
                     nutrition_grade_fr=favorite[2]
-                    )
-                ,
+                ),
                 'product_sub': Product(
                     id=favorite[3],
                     product_name_fr=favorite[4],
                     nutrition_grade_fr=favorite[5]
-                    )
+                )
             }
             favorite_list.append(product_favorite)
 

@@ -7,7 +7,7 @@ class Display:
         """Displays the list of categories"""
         for index, categorie in all_categories:
             print(f"{index}. {categorie}")
-    
+
     def display_products(self, products):
         """Show product list"""
         for index, product in enumerate(products):

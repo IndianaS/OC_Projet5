@@ -20,11 +20,9 @@ class Product:
         is_valid = True
         for word in keywords:
 
-
             if word not in article:
                 is_valid = False
                 break
-
 
             if not article[word]:
                 is_valid = False
