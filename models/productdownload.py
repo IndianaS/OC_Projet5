@@ -7,6 +7,7 @@ class ProductDownloader:
     """Class who downloads the products"""
 
     def __init__(self):
+        """Initialization of the API url"""
         self.url = url
 
     def product_by_category(self, category):

@@ -5,6 +5,7 @@ class DbCreate:
     """Db creation class"""
 
     def __init__(self, connection):
+        """Connection initialization"""
         self.connect = connection
 
     def create_database(self):

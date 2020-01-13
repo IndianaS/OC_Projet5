@@ -1,7 +1,7 @@
 from controller.interface import Interface
 from models.bdd.connection import Connection
 
-def __main__():
+def main():
     auth = Connection()
     auth.connect()
 
@@ -9,4 +9,4 @@ def __main__():
     application.loop()
 
 if __name__ == "__main__":
-    __main__()
+    main()

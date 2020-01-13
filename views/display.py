@@ -2,8 +2,6 @@
 
 class Display:
     """Display class"""
-    def __init__(self):
-        pass
 
     def display_categories(self, all_categories):
         """Displays the list of categories"""

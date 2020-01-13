@@ -5,6 +5,7 @@ class DbAdd:
     """Add data class in the db"""
 
     def __init__(self, connection):
+        """Connection initialization"""
         self.connect = connection
 
     def add_category(self, all_category):
@@ -52,6 +53,7 @@ class DbAdd:
             self.connect.commit()
 
     def add_favorite(self, product, substitute):
+        """Method for adding favorites in the db"""
         query = "INSERT INTO favorite (id_compared, id_result) VALUES (%s, %s)"
         cursor = self.connect.create_cursor()
         cursor.execute(query, (product.id, substitute.id,))

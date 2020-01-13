@@ -2,8 +2,9 @@ from models.product import Product
 
 
 class DbReading:
-
+    """Db reading class"""
     def __init__(self, connection):
+        """Connection initialization"""
         self.connect = connection
 
     def get_all_categories(self):

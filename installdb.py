@@ -4,7 +4,7 @@ from models.bdd.dbcreate import DbCreate
 from models.categorydownloader import CategoryDownloader
 
 
-def __main__():
+def main():
     auth = Connection()
     auth.connect()
 
@@ -29,4 +29,4 @@ def __main__():
     add_db.add_product(all_categories)
 
 if __name__ == "__main__":
-    __main__()
+    main()

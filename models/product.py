@@ -5,6 +5,7 @@ class Product:
     """Class that contains product information"""
 
     def __init__(self, **article):
+        """Initialization of the product object"""
         self.product_name_fr = article.get('product_name_fr')
         self.stores = article.get('stores')
         self.nutrition_grade_fr = article.get('nutrition_grade_fr')

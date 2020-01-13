@@ -6,9 +6,6 @@ from settings.settings import category_list, keywords
 class CategoryDownloader:
     """Download the categories"""
 
-    def __init__(self):
-        pass
-
     def get_category(self):
         """Add the categories to the list"""
         all_category = []

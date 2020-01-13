@@ -14,11 +14,12 @@
 
 # - Installation recommendations:
 - MariaDB (or MySQL)
+- Create a user for the project.
 
 # - 1: Initializing a db:
 - 1: To initialize the virtual environment: pipenv install
 - 2: To position yourself in pipenv: pipenv shell
-- 3: The user must rename settings.py.example to settings.py and indicate the login and password.
+- 3: The user must rename settings.py.example to settings.py and indicate the login and password of the database.
 - 4: For initializing a db: python installdb.py
 
 # - 2: Project run:

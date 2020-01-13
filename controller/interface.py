@@ -4,8 +4,12 @@ from models.bdd.dbadd import DbAdd
 
 
 class Interface:
-
+    """Program management class"""
     def __init__(self, auth):
+        """
+        Instantiation of communication classes with the database, 
+        Instantiating the class containing the views
+        """
         self.dbreading = DbReading(auth)
         self.dbadd = DbAdd(auth)
         self.display = Display()
@@ -48,6 +52,7 @@ class Interface:
         self.display.display_favorites(self.favorites)
 
     def input_user(self, message):
+        """User input recovery method"""
         while True:
             saisie_utilisateur = input(message)
 
