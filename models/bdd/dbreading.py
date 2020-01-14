@@ -57,41 +57,28 @@ class DbReading:
         """Method of recovering a selected product"""
         cursor = self.connect.create_cursor()
         query = """
-                SELECT
-                    product.id,
-                    product.product_name_fr,
-                    product.id_category,
-                    product.brands,
-                    product.nutrition_grade_fr,
-                    product.url
-                FROM
-                    openfood.product
-                WHERE
-                    product.id = %s
+                SELECT 
+                    p.id, 
+                    p.product_name_fr, 
+                    p.id_category, 
+                    p.brands, 
+                    p.nutrition_grade_fr, 
+                    p.url, 
+                    GROUP_CONCAT(s.name)
+                FROM product AS p
+                    JOIN product_has_store AS ps on (p.id = ps.id_product)
+                    JOIN store AS s on (ps.id_store = s.id)
+                WHERE id_product = %s
                 """
         cursor.execute(query, (id,))
-        id, name, id_category, brands, nutrition_grade_fr, url = cursor.fetchone()
-
-        query = """
-                SELECT
-                    store.name
-                FROM
-                    openfood.product_has_store
-                    JOIN store ON product_has_store.id_store = store.id
-                    JOIN product ON product_has_store.id_product = product.id
-                WHERE
-                    product_has_store.id_product = %s
-                """
-        cursor.execute(query, (id,))
-
-        product_stores = cursor.fetchall()
+        id, name, id_category, brands, nutrition_grade_fr, url, stores = cursor.fetchone()
 
         return Product(
             product_name_fr=name,
             nutrition_grade_fr=nutrition_grade_fr,
             id=id,
             brands=brands,
-            stores=', '.join([store for (store,) in product_stores]),
+            stores=stores,
             id_category=id_category,
             url=url,
         )

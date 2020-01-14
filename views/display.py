@@ -5,18 +5,20 @@ class Display:
 
     def display_categories(self, all_categories):
         """Displays the list of categories"""
+        print("\n", "--- Catégories ---")
         for index, categorie in all_categories:
             print(f"{index}. {categorie}")
 
     def display_products(self, products):
         """Show product list"""
+        print("\n", "--- Produits ---")
         for index, product in enumerate(products):
             print(f"{index+1}. {product}")
 
     def display_one_product(self, product):
         """View a selected product"""
         content = f"""
-        Produit de substitution :
+        --- Produit choisi ---
         Nom du produit : {product.product_name_fr}
         Nutriscore : {product.nutrition_grade_fr}
         Magasin : {product.stores}

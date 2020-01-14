@@ -34,9 +34,9 @@ class Interface:
         self.len = len(self.products)
         self.display.display_products(self.products)
 
-    def fetch_one_product(self, index):
+    def fetch_one_product(self, index, contextual_list):
         """Method called when the user requests a product"""
-        selected_id = self.substitutes[index - 1].id
+        selected_id = contextual_list[index - 1].id
         product = self.dbreading.get_product(selected_id)
         self.display.display_one_product(product)
 
@@ -44,8 +44,11 @@ class Interface:
         """Method called when the user requests the substitutes"""
         self.product = self.products[index - 1]
         self.substitutes = self.dbreading.get_substitute(self.product)
-        self.len = len(self.products)
-        self.display.display_products(self.substitutes)
+        if not self.substitutes:
+            print("Pas de substitus trouvés")
+        else:
+            self.len = len(self.products)
+            self.display.display_products(self.substitutes)
 
     def fetch_favorite(self):
         """Method called when the user requests the favorites"""
@@ -56,22 +59,17 @@ class Interface:
     def input_user(self, message):
         """User input recovery method"""
         while True:
-            saisie_utilisateur = input(message)
+            choice = input(message)
 
-            if saisie_utilisateur in self.commands:
-                return saisie_utilisateur
-
-            else:
-                try:
-                    saisie_utilisateur = int(saisie_utilisateur)
-                    assert saisie_utilisateur >= 1
-                    assert saisie_utilisateur <= self.len
-                    break
-
-                except BaseException:
-                    print("Votre choix n'est pas valide. \n")
-
-        return saisie_utilisateur
+            try:
+                if choice.isdigit() and 0 < int(choice) <= self.len:
+                    return int(choice)
+                elif choice in self.commands:
+                    return choice
+                else:
+                    raise ValueError
+            except ValueError:
+                print("Votre choix n'est pas valide. \n")
 
     def menu_home(self):
         """Home menu management"""
@@ -103,11 +101,12 @@ class Interface:
 
         self.choice = product_choice = self.input_user(
             'Choisir un produit de la liste :')
+        self.fetch_one_product(self.choice, self.products)
         self.fetch_substitutes(self.choice)
 
         self.choice = substitute_choice = self.input_user(
             'Choisir un substitut dans la liste :')
-        self.fetch_one_product(substitute_choice)
+        self.fetch_one_product(substitute_choice, self.substitutes)
 
         self.choice = self.input_user(
             'Voulez vous enregistrer le produit?\no pour oui / n pour non, a pour accueil :')
@@ -126,7 +125,7 @@ class Interface:
         self.fetch_favorite()
         self.substitutes = [item['product_sub'] for item in self.favorites]
         self.choice = self.input_user('Sélectionner un produit: ')
-        self.fetch_one_product(self.choice)
+        self.fetch_one_product(self.choice, self.substitutes)
         self.choice = self.input_user("a pour accueil, q pour quitter: ")
         if self.choice == "q":
             self.next = self.quit
