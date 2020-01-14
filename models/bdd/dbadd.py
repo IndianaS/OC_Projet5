@@ -1,4 +1,7 @@
 import mysql.connector
+import logging
+
+logging.basicConfig(filename='app.log', level=logging.INFO)
 
 
 class DbAdd:
@@ -18,13 +21,24 @@ class DbAdd:
             try:
                 cursor.execute(mySql_insert_query, (category.name,))
                 self.connect.commit()
-            except mysql.connector.errors.IntegrityError:
-                # Add logging here
-                pass
+            except mysql.connector.errors.IntegrityError as error:
+                logging.warning(error)
 
     def add_product(self, all_category):
         """Add all the data of a product in the db"""
-        mySql_insert_query = "INSERT INTO product (product_name_fr, nutrition_grade_fr, id, brands, id_category, url) VALUES (%s, %s, %s, %s, %s, %s)"
+        mySql_insert_query = """
+                                INSERT INTO product
+                                    (
+                                        product_name_fr,
+                                        nutrition_grade_fr,
+                                        id,
+                                        brands,
+                                        id_category,
+                                        url
+                                    )
+                                VALUES (%s, %s, %s, %s, %s, %s)
+                            """
+
         cursor = self.connect.create_cursor()
         for category in all_category:
             query = "SELECT id FROM category WHERE category.name LIKE %s"
@@ -35,9 +49,8 @@ class DbAdd:
                 try:
                     cursor.execute(mySql_insert_query, (
                         product.product_name_fr[:499], product.nutrition_grade_fr, product.id, product.brands, cat_id[0], product.url))
-                except mysql.connector.errors.IntegrityError:
-                    # Add logging here
-                    continue
+                except mysql.connector.errors.IntegrityError as error:
+                    logging.warning(error)
 
                 for store in product.stores.split(","):
                     try:
@@ -45,10 +58,8 @@ class DbAdd:
                         cursor.execute(query, (store.strip().lower(),))
                         query = "INSERT INTO openfood.product_has_store (id_store, id_product) VALUES (LAST_INSERT_ID(), %s)"
                         cursor.execute(query, (product.id,))
-                    except mysql.connector.errors.IntegrityError:
-                        # Add logging here
-
-                        continue
+                    except mysql.connector.errors.IntegrityError as error:
+                        logging.warning(error)
 
             self.connect.commit()
 

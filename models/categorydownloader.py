@@ -1,6 +1,6 @@
 from models.category import Category
 from models.productdownload import ProductDownloader
-from settings.settings import category_list, keywords
+from settings.settings import category_list
 
 
 class CategoryDownloader:

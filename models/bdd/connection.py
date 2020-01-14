@@ -1,7 +1,6 @@
 import mysql.connector
-from mysql.connector import Error
 
-from settings.settings import *
+from settings.settings import host, database, user, password
 
 
 class Connection:
@@ -24,7 +23,6 @@ class Connection:
             )
 
         except mysql.connector.Error as error:
-            # Add logging
             print(error)
 
     def create_cursor(self):

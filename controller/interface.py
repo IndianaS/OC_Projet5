@@ -50,6 +50,7 @@ class Interface:
     def fetch_favorite(self):
         """Method called when the user requests the favorites"""
         self.favorites = self.dbreading.get_favorite()
+        self.len = len(self.favorites)
         self.display.display_favorites(self.favorites)
 
     def input_user(self, message):
@@ -109,12 +110,12 @@ class Interface:
         self.fetch_one_product(substitute_choice)
 
         self.choice = self.input_user(
-            'Voulez vous enregistrer le produit?\no pour oui / n pour non :')
-        if self.choice in ("q", "n"):
+            'Voulez vous enregistrer le produit?\no pour oui / n pour non, a pour accueil :')
+        if self.choice == "q":
             self.next = self.quit
-        elif self.choice == "a":
+        elif self.choice in ("a", "n"):
             self.next = self.menu_home
-        elif self.choice == 'o':
+        elif self.choice == "o":
             self.dbadd.add_favorite(
                 self.products[product_choice - 1], self.substitutes[substitute_choice - 1])
             self.next = self.menu_home
@@ -123,7 +124,10 @@ class Interface:
         """Favorite menu management"""
         print("Le choix précédent a été", self.choice)
         self.fetch_favorite()
-        self.choice = self.input_user('Sélectionner un produit:')
+        self.substitutes = [item['product_sub'] for item in self.favorites]
+        self.choice = self.input_user('Sélectionner un produit: ')
+        self.fetch_one_product(self.choice)
+        self.choice = self.input_user("a pour accueil, q pour quitter: ")
         if self.choice == "q":
             self.next = self.quit
         elif self.choice == "a":

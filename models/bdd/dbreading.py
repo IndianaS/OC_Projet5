@@ -62,21 +62,38 @@ class DbReading:
                     product.product_name_fr,
                     product.id_category,
                     product.brands,
-                    product.nutrition_grade_fr
+                    product.nutrition_grade_fr,
+                    product.url
                 FROM
                     openfood.product
                 WHERE
                     product.id = %s
                 """
         cursor.execute(query, (id,))
-        id, name, id_category, brands, nutrition_grade_fr = cursor.fetchone()
+        id, name, id_category, brands, nutrition_grade_fr, url = cursor.fetchone()
+
+        query = """
+                SELECT
+                    store.name
+                FROM
+                    openfood.product_has_store
+                    JOIN store ON product_has_store.id_store = store.id
+                    JOIN product ON product_has_store.id_product = product.id
+                WHERE
+                    product_has_store.id_product = %s
+                """
+        cursor.execute(query, (id,))
+
+        product_stores = cursor.fetchall()
 
         return Product(
             product_name_fr=name,
             nutrition_grade_fr=nutrition_grade_fr,
             id=id,
             brands=brands,
+            stores=', '.join([store for (store,) in product_stores]),
             id_category=id_category,
+            url=url,
         )
 
     def get_substitute(self, product):

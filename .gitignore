@@ -1,3 +1,4 @@
 .vscode
 settings/settings.py
 __pycache__
+app.log
