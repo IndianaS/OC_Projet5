@@ -57,13 +57,13 @@ class DbReading:
         """Method of recovering a selected product"""
         cursor = self.connect.create_cursor()
         query = """
-                SELECT 
-                    p.id, 
-                    p.product_name_fr, 
-                    p.id_category, 
-                    p.brands, 
-                    p.nutrition_grade_fr, 
-                    p.url, 
+                SELECT
+                    p.id,
+                    p.product_name_fr,
+                    p.id_category,
+                    p.brands,
+                    p.nutrition_grade_fr,
+                    p.url,
                     GROUP_CONCAT(s.name)
                 FROM product AS p
                     JOIN product_has_store AS ps on (p.id = ps.id_product)
@@ -71,7 +71,8 @@ class DbReading:
                 WHERE id_product = %s
                 """
         cursor.execute(query, (id,))
-        id, name, id_category, brands, nutrition_grade_fr, url, stores = cursor.fetchone()
+        id, name, id_category, brands,\
+            nutrition_grade_fr, url, stores = cursor.fetchone()
 
         return Product(
             product_name_fr=name,
@@ -136,8 +137,10 @@ class DbReading:
                     result.nutrition_grade_fr
                 FROM
                     openfood.favorite
-                    JOIN product as compared ON favorite.id_compared = compared.id
-                    JOIN product as result ON favorite.id_result = result.id
+                    JOIN product as compared ON \
+                        favorite.id_compared = compared.id
+                    JOIN product as result ON \
+                        favorite.id_result = result.id
                 """
 
         cursor.execute(query)

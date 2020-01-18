@@ -48,15 +48,29 @@ class DbAdd:
             for product in category.products:
                 try:
                     cursor.execute(mySql_insert_query, (
-                        product.product_name_fr[:499], product.nutrition_grade_fr, product.id, product.brands, cat_id[0], product.url))
+                        product.product_name_fr[:499],
+                        product.nutrition_grade_fr,
+                        product.id,
+                        product.brands,
+                        cat_id[0],
+                        product.url)
+                        )
                 except mysql.connector.errors.IntegrityError as error:
                     logging.warning(error)
 
                 for store in product.stores.split(","):
                     try:
-                        query = "INSERT INTO openfood.store (name) VALUES (%s) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=name"
+                        query = """
+                                INSERT INTO openfood.store (name)
+                                VALUES (%s) ON DUPLICATE KEY UPDATE
+                                id=LAST_INSERT_ID(id), name=name
+                                """
                         cursor.execute(query, (store.strip().lower(),))
-                        query = "INSERT INTO openfood.product_has_store (id_store, id_product) VALUES (LAST_INSERT_ID(), %s)"
+                        query = """
+                                INSERT INTO openfood.product_has_store
+                                (id_store, id_product)
+                                VALUES (LAST_INSERT_ID(), %s)
+                                """
                         cursor.execute(query, (product.id,))
                     except mysql.connector.errors.IntegrityError as error:
                         logging.warning(error)

@@ -11,7 +11,8 @@ class DbCreate:
         """Method of creating db"""
         cursor = self.connect.create_cursor()
         create_query = """
-                        CREATE DATABASE IF NOT EXISTS openfood CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                        CREATE DATABASE IF NOT EXISTS openfood
+                        CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
                         """
         cursor.execute(create_query)
 
@@ -39,7 +40,8 @@ class DbCreate:
                         url VARCHAR(500) NOT NULL,
                         PRIMARY KEY (id),
                         CONSTRAINT `fk_id_category`
-                            FOREIGN KEY (`id_category`) REFERENCES `category` (`id`)
+                            FOREIGN KEY (`id_category`)
+                            REFERENCES `category` (`id`)
                         );
                         """
         cursor.execute(create_query)
@@ -50,9 +52,11 @@ class DbCreate:
                         id_result BIGINT UNSIGNED NOT NULL,
                         PRIMARY KEY (id_compared),
                         CONSTRAINT `fk_id_compared`
-                            FOREIGN KEY (`id_compared`) REFERENCES `product` (`id`),
+                            FOREIGN KEY (`id_compared`)
+                            REFERENCES `product` (`id`),
                         CONSTRAINT `fk_id_result`
-                            FOREIGN KEY (`id_result`) REFERENCES `product` (`id`)
+                            FOREIGN KEY (`id_result`)
+                            REFERENCES `product` (`id`)
                         );
                         """
         cursor.execute(create_query)
@@ -67,14 +71,16 @@ class DbCreate:
         cursor.execute(create_query)
 
         create_query = """
-                        CREATE TABLE IF NOT EXISTS `openfood`.`product_has_store` (
+                        CREATE TABLE IF NOT EXISTS
+                        `openfood`.`product_has_store` (
                         id_store INT UNSIGNED NOT NULL,
                         id_product BIGINT UNSIGNED NOT NULL,
                         PRIMARY KEY (id_store, id_product),
                         CONSTRAINT `fk_id_store`
                             FOREIGN KEY (`id_store`) REFERENCES `store` (`id`),
                         CONSTRAINT `fk_id_product`
-                            FOREIGN KEY (`id_product`) REFERENCES `product` (`id`)
+                            FOREIGN KEY (`id_product`)
+                            REFERENCES `product` (`id`)
                         );
                         """
         cursor.execute(create_query)
