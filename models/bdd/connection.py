@@ -1,6 +1,10 @@
+import logging
+
 import mysql.connector
 
-from settings.settings import host, database, user, password
+from settings.settings import database, host, password, user
+
+logging.basicConfig(filename='app.log', level=logging.INFO)
 
 
 class Connection:
@@ -23,7 +27,7 @@ class Connection:
             )
 
         except mysql.connector.Error as error:
-            print(error)
+            logging.warning(error)
 
     def create_cursor(self):
         return self.connection.cursor()
