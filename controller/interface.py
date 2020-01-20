@@ -101,23 +101,37 @@ class Interface:
 
         self.choice = product_choice = self.input_user(
             'Choisir un produit de la liste :')
-        self.fetch_one_product(self.choice, self.products)
-        self.fetch_substitutes(self.choice)
-
-        self.choice = substitute_choice = self.input_user(
-            'Choisir un substitut dans la liste :')
-        self.fetch_one_product(substitute_choice, self.substitutes)
-
-        self.choice = self.input_user(
-            'Voulez vous enregistrer le produit?\no pour oui / n pour non, a pour accueil :')
         if self.choice == "q":
             self.next = self.quit
         elif self.choice in ("a", "n"):
             self.next = self.menu_home
-        elif self.choice == "o":
-            self.dbadd.add_favorite(
-                self.products[product_choice - 1], self.substitutes[substitute_choice - 1])
-            self.next = self.menu_home
+        else:
+            self.fetch_one_product(self.choice, self.products)
+            self.fetch_substitutes(self.choice)
+
+            self.choice = substitute_choice = self.input_user(
+                'Choisir un substitut dans la liste :')
+            if self.choice == "q":
+                self.next = self.quit
+            elif self.choice in ("a", "n"):
+                self.next = self.menu_home
+            else:
+                self.fetch_one_product(substitute_choice, self.substitutes)
+
+                self.choice = self.input_user(
+                    'Voulez vous enregistrer le produit?'
+                    '\no pour oui / n pour non, a pour accueil :'
+                )
+                if self.choice == "q":
+                    self.next = self.quit
+                elif self.choice in ("a", "n"):
+                    self.next = self.menu_home
+                elif self.choice == "o":
+                    self.dbadd.add_favorite(
+                        self.products[product_choice - 1],
+                        self.substitutes[substitute_choice - 1]
+                    )
+                    self.next = self.menu_home
 
     def menu_favorites(self):
         """Favorite menu management"""
@@ -125,12 +139,17 @@ class Interface:
         self.fetch_favorite()
         self.substitutes = [item['product_sub'] for item in self.favorites]
         self.choice = self.input_user('Sélectionner un produit: ')
-        self.fetch_one_product(self.choice, self.substitutes)
-        self.choice = self.input_user("a pour accueil, q pour quitter: ")
         if self.choice == "q":
             self.next = self.quit
-        elif self.choice == "a":
+        elif self.choice in ("a", "n"):
             self.next = self.menu_home
+        else:
+            self.fetch_one_product(self.choice, self.substitutes)
+            self.choice = self.input_user("a pour accueil, q pour quitter: ")
+            if self.choice == "q":
+                self.next = self.quit
+            elif self.choice == "a":
+                self.next = self.menu_home
 
     def quit(self, **info):
         """Methode to get out of the loop"""

@@ -32,7 +32,10 @@ class DbReading:
             FROM
                 openfood.product
             WHERE
-                product.id_category = %s LIMIT 50
+                product.id_category = %s 
+            AND    
+                product.nutrition_grade_fr > 'b'
+                LIMIT 50
                 """
 
         cursor.execute(query, (id_category,))

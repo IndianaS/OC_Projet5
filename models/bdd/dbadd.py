@@ -54,7 +54,7 @@ class DbAdd:
                         product.brands,
                         cat_id[0],
                         product.url)
-                        )
+                    )
                 except mysql.connector.errors.IntegrityError as error:
                     logging.warning(error)
 
