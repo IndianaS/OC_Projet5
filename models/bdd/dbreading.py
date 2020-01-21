@@ -32,8 +32,8 @@ class DbReading:
             FROM
                 openfood.product
             WHERE
-                product.id_category = %s 
-            AND    
+                product.id_category = %s
+            AND
                 product.nutrition_grade_fr > 'b'
                 LIMIT 50
                 """
