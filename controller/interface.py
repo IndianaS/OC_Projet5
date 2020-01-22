@@ -151,7 +151,7 @@ class Interface:
             elif self.choice == "a":
                 self.next = self.menu_home
 
-    def quit(self, **info):
+    def quit(self):
         """Methode to get out of the loop"""
         self.running = False
 
